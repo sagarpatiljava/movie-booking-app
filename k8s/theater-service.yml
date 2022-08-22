@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: theater-service-app
+  labels:
+    app: theater-service-app
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: theater-service-app
+  template:
+    metadata:
+      labels:
+        editor: theater-service-app
+    spec:
+      containers:
+      - name: theater-service-app
+        image: sagarpatiljava/theater-service:0.0.1
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 8082
+kind: Service
+apiVersion: v1
+metadata:
+  name:  theater-service-svc
+spec:
+  selector:
+    app:  theater-service-app
+  type:  ClusterIP
+  ports:
+  - port:  80
+    targetPort:  8082

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: movie-service-app
+  labels:
+    app: movie-service-app
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: movie-service-app
+  template:
+    metadata:
+      labels:
+        editor: movie-service-app
+    spec:
+      containers:
+      - name: movie-service-app
+        image: sagarpatiljava/movie-service:0.0.1
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 8083
+kind: Service
+apiVersion: v1
+metadata:
+  name:  movie-service-svc
+spec:
+  selector:
+    app:  movie-service-app
+  type:  ClusterIP
+  ports:
+  - port:  80
+    targetPort:  8083
